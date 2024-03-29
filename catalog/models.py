@@ -10,7 +10,6 @@ class Product(models.Model):
     purchase_price = models.IntegerField(verbose_name="цена за покупку")
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="дата создания")
     date_updated = models.DateTimeField(auto_now=True, verbose_name="дата последнего изменения")
-    date_manufactured = models.DateField(auto_now=True, verbose_name="дата изготовления")
     category = models.ForeignKey('Category', on_delete=models.PROTECT)
 
     def __str__(self):

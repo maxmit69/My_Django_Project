@@ -9,13 +9,13 @@ class Command(BaseCommand):
 
     @staticmethod
     def json_read_categories():
-        with open('cat_data.json', encoding="UTF-8") as json_file:
+        with open('catalog/fixtures/cat_data.json', encoding="UTF-8") as json_file:
             cat = json.load(json_file)
             return [item for item in cat if item["model"] == "catalog.category"]
 
     @staticmethod
     def json_read_products():
-        with open('prod_data.json', encoding="UTF-8") as json_file:
+        with open('catalog/fixtures/prod_data.json', encoding="UTF-8") as json_file:
             prod = json.load(json_file)
             return [item for item in prod if item["model"] == "catalog.product"]
 

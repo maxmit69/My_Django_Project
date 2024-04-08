@@ -1,9 +1,13 @@
 from django.shortcuts import render
 
+from catalog.models import Product
+
 
 # Create your views here.
 def index(request):
-    return render(request, 'catalog/index.html')
+    context = {'object_list': Product.objects.all(),
+               }
+    return render(request, 'catalog/index.html', context)
 
 
 def contact(request):
@@ -14,3 +18,9 @@ def contact(request):
         print(f'Name: {name}, phone: {phone}, Message: {message}')
 
     return render(request, 'catalog/contacts.html')
+
+
+def about(request, pk):
+    context = {'object': Product.objects.get(pk=pk),
+               }
+    return render(request, 'catalog/about.html', context)

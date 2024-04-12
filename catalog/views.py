@@ -1,26 +1,51 @@
 from django.shortcuts import render
-
+from django.views.generic import ListView, DetailView
+from django.views import View
 from catalog.models import Product
 
 
 # Create your views here.
-def index(request):
-    context = {'object_list': Product.objects.all(),
-               }
-    return render(request, 'catalog/index.html', context)
+class ProductListView(ListView):
+    model = Product
+    # template_name = 'catalog/product_list.html'
+    template_name = 'catalog/index.html'
 
 
-def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        print(f'Name: {name}, phone: {phone}, Message: {message}')
-
-    return render(request, 'catalog/contacts.html')
+# def index(request):
+#     context = {'object_list': Product.objects.all(),
+#                }
+#     return render(request, 'catalog/index.html', context)
 
 
-def about(request, pk):
-    context = {'object': Product.objects.get(pk=pk),
-               }
-    return render(request, 'catalog/about.html', context)
+class Contacts(View):
+    @staticmethod
+    def get(request):
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            phone = request.POST.get('phone')
+            message = request.POST.get('message')
+            print(f'Name: {name}, phone: {phone}, Message: {message}')
+
+        return render(request, 'catalog/contacts.html')
+
+
+# def contacts(request):
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         phone = request.POST.get('phone')
+#         message = request.POST.get('message')
+#         print(f'Name: {name}, phone: {phone}, Message: {message}')
+#
+#     return render(request, 'catalog/contacts.html')
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    # template_name = 'catalog/product_detail.html'
+    template_name = 'catalog/about.html'
+
+
+# def about(request, pk):
+#     context = {'object': Product.objects.get(pk=pk),
+#                }
+#     return render(request, 'catalog/about.html', context)

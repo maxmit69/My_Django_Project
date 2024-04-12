@@ -5,15 +5,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('catalog', '0002_rename_description_category_description_cat_and_more'),
     ]
 
-    operations = [
+    operations = (
         migrations.AlterField(
             model_name='product',
             name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='products', to='catalog.category', verbose_name='категория'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='products',
+                                    to='catalog.category', verbose_name='категория'),
         ),
-    ]
+    )

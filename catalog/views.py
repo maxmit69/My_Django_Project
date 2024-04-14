@@ -1,22 +1,15 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, TemplateView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.views import View
+from pytils.translit import slugify
 
-from catalog.models import Product
+from catalog.models import Product, Blog
 
 
 # Create your views here.
 class ProductListView(ListView):
     model = Product
-    # template_name = 'catalog/product_list.html'
-    # template_name = 'catalog/index.html'
-
-
-# def index(request):
-#     context = {'object_list': Product.objects.all(),
-#                }
-#     return render(request, 'catalog/index.html', context)
 
 
 class Contacts(View):
@@ -30,26 +23,82 @@ class Contacts(View):
         phone = request.POST.get('phone')
         message = request.POST.get('message')
         print(f'Name: {name}, phone: {phone}, Message: {message}')
-        # return JsonResponse({'name': name, 'phone': phone, 'message': message})
         return render(request, 'catalog/contacts.html')
-
-
-# def contacts(request):
-#     if request.method == 'POST':
-#         name = request.POST.get('name')
-#         phone = request.POST.get('phone')
-#         message = request.POST.get('message')
-#         print(f'Name: {name}, phone: {phone}, Message: {message}')
-#
-#     return render(request, 'catalog/contacts.html')
 
 
 class ProductDetailView(DetailView):
     model = Product
-    # template_name = 'catalog/product_detail.html'
-    template_name = 'catalog/about.html'
 
-# def about(request, pk):
-#     context = {'object': Product.objects.get(pk=pk),
-#                }
-#     return render(request, 'catalog/about.html', context)
+
+class BlogListView(ListView):
+    model = Blog
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(is_published=True)
+        return queryset
+
+
+class BlogDetailView(DetailView):
+    model = Blog
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.views_count += 1
+        self.object.save()
+        return self.object
+
+
+class BlogCreateView(CreateView):
+    model = Blog
+    fields = ('heading', 'content', 'image',)
+    success_url = reverse_lazy('catalog:blog_list')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_blog = form.save()
+            new_blog.slug = slugify(new_blog.heading)
+            new_blog.save()
+
+        return super().form_valid(form)
+
+
+class BlogUpdateView(UpdateView):
+    model = Blog
+    fields = ('heading', 'content', 'image',)
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_blog = form.save()
+            new_blog.slug = slugify(new_blog.heading)
+            new_blog.save()
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        if self.object.slug == slugify(self.object.heading):
+            return reverse('catalog:view', kwargs={'slug': self.object.slug})
+        return reverse('catalog:view', args=[self.kwargs.get('slug')])
+
+
+class BlogDeleteView(DeleteView):
+    model = Blog
+    success_url = reverse_lazy('catalog:blog_list')
+
+
+def is_published_activity(request, slug):
+    blog_item = get_object_or_404(Blog, slug=slug)
+    if blog_item.is_published:
+        blog_item.is_published = False
+    else:
+        blog_item.is_published = True
+
+    blog_item.save()
+
+    return redirect(reverse('catalog:blog_list', ))
+
+
+def edit_published(request):
+    context = {'object_list': Blog.objects.all(),
+               }
+    return render(request, 'catalog/published_activity.html', context)

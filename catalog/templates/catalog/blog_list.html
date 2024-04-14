@@ -1,0 +1,23 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+{% include 'catalog/head.html' %}
+<body>
+{% include 'catalog/nav.html' %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Блоги</h1>
+
+</div>
+<div class="container">
+    <div class="row text-center">
+        {% block content %}
+        {% for object in object_list %}
+            <a class="lead" href="{% url 'catalog:view' object.slug %}">{{ object.heading }}</a>
+        {% endfor %}
+        {% endblock %}
+    </div>
+{% include 'catalog/footer.html' %}
+</div>
+<script src="{% static 'catalog/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

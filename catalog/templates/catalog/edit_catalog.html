@@ -1,0 +1,42 @@
+{% load static %}
+{% load my_tags %}
+<!doctype html>
+<html lang="en">
+{% include 'catalog/head.html' %}
+<body>
+{% include 'catalog/nav.html' %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Редактировать продукты</h1>
+    <a href="{% url 'catalog:create_product' %}"
+       class="btn btn-outline-primary">Создать новый продукт</a>
+
+</div>
+<div class="container">
+    <div class="row text-center">
+        {% block content %}
+            {% for object in object_list %}
+                <div class="col-md-4">
+                    <div class="card md-4 box-shadow">
+                        <div class="card-body">
+                            {{ object.name_prod }}
+                            <div class="b-flex justify-content-between align-items-center">
+                                <img class="card-img-top" src="{{ object.image | my_media }}" alt="Card image cap">
+
+                                <div class="btn-group">
+                                    <a href="{% url 'catalog:update_product' object.pk %}"
+                                       class="btn btn-outline-primary">Обновить</a>
+                                    <a href="{% url 'catalog:product_delete' object.pk %}"
+                                       class="btn btn-outline-primary">Удалить</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+    {% include 'catalog/footer.html' %}
+</div>
+<script src="{% static 'catalog/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

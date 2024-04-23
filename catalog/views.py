@@ -3,13 +3,34 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.views import View
 from pytils.translit import slugify
-
+from catalog.forms import ProductForm
 from catalog.models import Product, Blog
 
 
 # Create your views here.
 class ProductListView(ListView):
     model = Product
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:edit_catalog')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:edit_catalog')
+
+
+class ProductDetailView(DetailView):
+    model = Product
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:index')
 
 
 class Contacts(View):
@@ -24,10 +45,6 @@ class Contacts(View):
         message = request.POST.get('message')
         print(f'Name: {name}, phone: {phone}, Message: {message}')
         return render(request, 'catalog/contacts.html')
-
-
-class ProductDetailView(DetailView):
-    model = Product
 
 
 class BlogListView(ListView):
@@ -102,3 +119,9 @@ def edit_published(request):
     context = {'object_list': Blog.objects.all(),
                }
     return render(request, 'catalog/published_activity.html', context)
+
+
+def edit_catalog(request):
+    context = {'object_list': Product.objects.all(),
+               }
+    return render(request, 'catalog/edit_catalog.html', context)

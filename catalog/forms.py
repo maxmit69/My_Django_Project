@@ -1,11 +1,18 @@
 from django import forms
 
-from catalog.models import Product
+from catalog.models import Product, Category, Blog
 
 forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
 
 
-class ProductForm(forms.ModelForm):
+class StyleFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs = {'class': 'form-control', }
+
+
+class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
@@ -27,3 +34,9 @@ class ProductForm(forms.ModelForm):
 
         cleaned_data = " ".join(cleaned_data)
         return cleaned_data
+
+
+class BlogForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = ('heading', 'content', 'image',)

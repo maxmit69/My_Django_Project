@@ -14,8 +14,23 @@
                     <h1 class="card-title pricing-card-title">{{ object.purchase_price }}p</h1>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>- {{ object.description_prod | slice:50 }}</li>
+                        <br>
+                        <li>
+                            {% if versions.exists %}
+                                {% for version in object.version.all %}
+                                        {% if version.indicates_current_version %}
+                                            <p>Активная версия продукта: {{ version.version_name }}</p>
+                                        {% else%}
+                                            <p>У продукта нет версий или активной версии.</p>
+                                        {% endif %}
+                                            {% empty %}
+                                                <p>У продукта нет версий или активной версии.</p>
+                                {% endfor %}
+                            {% endif %}
+                        </li>
                     </ul>
-{#                    <a class="p-2 btn btn-outline-primary" href="/about/{{ object.pk }}">Купить</a>#}
+
+                    {#                    <a class="p-2 btn btn-outline-primary" href="/about/{{ object.pk }}">Купить</a>#}
                     <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:about' object.pk %}">Выбрать</a>
                 </div>
             </div>

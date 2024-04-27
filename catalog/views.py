@@ -1,15 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 from pytils.translit import slugify
-from catalog.forms import ProductForm
-from catalog.models import Product, Blog
+from catalog.forms import ProductForm, BlogForm
+from catalog.models import Product, Blog, Version
 
 
-# Create your views here.
 class ProductListView(ListView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['versions'] = Version.objects.all()
+        return context
 
 
 class ProductCreateView(CreateView):
@@ -68,7 +72,7 @@ class BlogDetailView(DetailView):
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields = ('heading', 'content', 'image',)
+    form_class = BlogForm
     success_url = reverse_lazy('catalog:blog_list')
 
     def form_valid(self, form):
@@ -82,7 +86,7 @@ class BlogCreateView(CreateView):
 
 class BlogUpdateView(UpdateView):
     model = Blog
-    fields = ('heading', 'content', 'image',)
+    form_class = BlogForm
 
     def form_valid(self, form):
         if form.is_valid():

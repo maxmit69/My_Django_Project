@@ -14,6 +14,10 @@ urlpatterns = [
     path('about/<int:pk>', views.ProductDetailView.as_view(), name='about'),
     path('edit_catalog/', views.edit_catalog, name='edit_catalog'),
 
+    path('versions/create/', views.VersionCreateView.as_view(), name='create_version'),
+    path('versions/update/<int:pk>/', views.VersionUpdateView.as_view(), name='update_version'),
+    path('versions/delete/<int:pk>/', views.VersionDeleteView.as_view(), name='delete_version'),
+
     path('create/new/', views.BlogCreateView.as_view(), name='create'),
     path('blog/', views.BlogListView.as_view(), name='blog_list'),
     path('view/<slug:slug>', views.BlogDetailView.as_view(), name='view'),

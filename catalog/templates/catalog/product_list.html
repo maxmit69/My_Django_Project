@@ -21,16 +21,14 @@
                                         {% if version.indicates_current_version %}
                                             <p>Активная версия продукта: {{ version.version_name }}</p>
                                         {% else%}
-                                            <p>У продукта нет версий или активной версии.</p>
+                                            <p>Не активная версия: {{ version.version_name  }}</p>
                                         {% endif %}
                                             {% empty %}
-                                                <p>У продукта нет версий или активной версии.</p>
+                                                <p>У продукта нет версий.</p>
                                 {% endfor %}
                             {% endif %}
                         </li>
                     </ul>
-
-                    {#                    <a class="p-2 btn btn-outline-primary" href="/about/{{ object.pk }}">Купить</a>#}
                     <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:about' object.pk %}">Выбрать</a>
                 </div>
             </div>

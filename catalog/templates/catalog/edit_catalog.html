@@ -9,11 +9,15 @@
     <h1 class="display-4">Редактировать продукты</h1>
     <a href="{% url 'catalog:create_product' %}"
        class="btn btn-outline-primary">Создать новый продукт</a>
+    <a href="{% url 'catalog:create_version' %}"
+       class="btn btn-outline-primary">Создать новую версию</a>
+
 
 </div>
 <div class="container">
     <div class="row text-center">
         {% block content %}
+
             {% for object in object_list %}
                 <div class="col-md-4">
                     <div class="card md-4 box-shadow">
@@ -21,17 +25,39 @@
                             {{ object.name_prod }}
                             <div class="b-flex justify-content-between align-items-center">
                                 <img class="card-img-top" src="{{ object.image | my_media }}" alt="Card image cap">
-
                                 <div class="btn-group">
-                                    <a href="{% url 'catalog:update_product' object.pk %}"
-                                       class="btn btn-outline-primary">Обновить</a>
-                                    <a href="{% url 'catalog:product_delete' object.pk %}"
-                                       class="btn btn-outline-primary">Удалить</a>
+                                    <ul>
+                                        <!-- Работа с продуктом -->
+                                        <li><a href="{% url 'catalog:update_product' object.pk %}"
+                                               class="btn btn-outline-primary">Обновить</a> <a
+                                                href="{% url 'catalog:product_delete' object.pk %}"
+                                                class="btn btn-outline-primary">Удалить</a></li>
+                                        <br>
+                                        <!-- Вывод информации о текущей версии -->
+                                        {% for obj in object.version.all %}
+                                                {% if obj.indicates_current_version %}
+                                                    <p>Активен: Продукт № {{ obj.pk }}</p>
+                                                {% else %}
+                                                    <p>Не активен: Продукт № {{ obj.pk }}</p>
+                                                {% endif %}
+                                                    {% empty %}
+                                                        <p>У продукта нет версий.</p>
+                                        {% endfor %}
+                                        <!-- Работа с версиями -->
+                                        {% for t in object.version.all %}
+                                            <li><a href="{% url 'catalog:update_version' t.pk %}"
+                                                   class="btn btn-outline-primary">Обновить версию</a>
+                                                <a href="{% url 'catalog:delete_version' t.pk %}"
+                                                   class="btn btn-outline-primary">Удалить версию</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             {% endfor %}
         {% endblock %}
     </div>

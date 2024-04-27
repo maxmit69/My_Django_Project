@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 from pytils.translit import slugify
-from catalog.forms import ProductForm, BlogForm
+from catalog.forms import ProductForm, BlogForm, VersionForm
 from catalog.models import Product, Blog, Version
 
 
@@ -127,5 +127,23 @@ def edit_published(request):
 
 def edit_catalog(request):
     context = {'object_list': Product.objects.all(),
+               'versions': Version.objects.all(),
                }
     return render(request, 'catalog/edit_catalog.html', context)
+
+
+class VersionCreateView(CreateView):
+    model = Version
+    form_class = VersionForm
+    success_url = reverse_lazy('catalog:edit_catalog')
+
+
+class VersionUpdateView(UpdateView):
+    model = Version
+    form_class = VersionForm
+    success_url = reverse_lazy('catalog:edit_catalog')
+
+
+class VersionDeleteView(DeleteView):
+    model = Version
+    success_url = reverse_lazy('catalog:edit_catalog')

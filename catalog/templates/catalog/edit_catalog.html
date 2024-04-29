@@ -44,10 +44,10 @@
                                                         <p>У продукта нет версий.</p>
                                         {% endfor %}
                                         <!-- Работа с версиями -->
-                                        {% for t in object.version.all %}
-                                            <li><a href="{% url 'catalog:update_version' t.pk %}"
+                                        {% for obj_vers in object.version.all %}
+                                            <li><a href="{% url 'catalog:update_version' obj_vers.pk %}"
                                                    class="btn btn-outline-primary">Обновить версию</a>
-                                                <a href="{% url 'catalog:delete_version' t.pk %}"
+                                                <a href="{% url 'catalog:delete_version' obj_vers.pk %}"
                                                    class="btn btn-outline-primary">Удалить версию</a>
                                             </li>
                                         {% endfor %}

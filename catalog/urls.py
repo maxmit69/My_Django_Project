@@ -24,6 +24,4 @@ urlpatterns = [
     path('edit/<slug:slug>/update/', views.BlogUpdateView.as_view(), name='edit'),
     path('delete/<slug:slug>/delete/', views.BlogDeleteView.as_view(), name='delete'),
     path('activity/<slug:slug>', views.is_published_activity, name='is_published_activity'),
-    path('edit_blog/', views.edit_published, name='published_activity'),
-]
-
+    path('edit_blog/', views.edit_published, name='published_activity'),]

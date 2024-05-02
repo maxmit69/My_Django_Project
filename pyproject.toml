@@ -12,7 +12,7 @@ pillow = "^10.2.0"
 ipython = "^8.22.2"
 django-extensions = "^3.2.3"
 pytils = "^0.4.1"
-django = "^5.0.4"
+django = "4.2"
 
 
 [build-system]

@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 """
 Django settings for config project.
 
@@ -139,8 +144,8 @@ LOGOUT_REDIRECT_URL = 'catalog:index'
 
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "maxmit83@yandex.ru"
-EMAIL_HOST_PASSWORD = "zqwumwyaawjfjern"
+EMAIL_HOST_USER = os.getenv('MY_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('MY_EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 

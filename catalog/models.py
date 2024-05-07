@@ -23,6 +23,8 @@ class Product(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="дата создания")
     date_updated = models.DateTimeField(auto_now=True, verbose_name="дата последнего изменения")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="категория")
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name="Автор продукта",
+                             help_text='Автор поста')
 
     def __str__(self):
         return f'{self.name_prod} {self.category} {self.description_prod}'

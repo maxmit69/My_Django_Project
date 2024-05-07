@@ -1,0 +1,42 @@
+[
+  {
+    "model": "catalog.version",
+    "pk": 1,
+    "fields": {
+      "version_number": 1,
+      "product": 12,
+      "version_name": "Новое пополнение",
+      "indicates_current_version": true
+    }
+  },
+  {
+    "model": "catalog.version",
+    "pk": 2,
+    "fields": {
+      "version_number": 2,
+      "product": 8,
+      "version_name": "Новое поступление",
+      "indicates_current_version": true
+    }
+  },
+  {
+    "model": "catalog.version",
+    "pk": 3,
+    "fields": {
+      "version_number": 4,
+      "product": 9,
+      "version_name": "Модельный пошив",
+      "indicates_current_version": false
+    }
+  },
+  {
+    "model": "catalog.version",
+    "pk": 4,
+    "fields": {
+      "version_number": 6,
+      "product": 13,
+      "version_name": "Эксперементальная версия",
+      "indicates_current_version": true
+    }
+  }
+]

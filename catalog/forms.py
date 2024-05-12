@@ -17,7 +17,13 @@ class StyleFormMixin:
 class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('name_prod', 'description_prod', 'category', 'image', 'purchase_price')
+        fields = ('name_prod', 'description_prod', 'category', 'image', 'purchase_price', 'is_published_prod',)
+
+
+class ModeratorForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('description_prod', 'category', 'is_published_prod',)
 
     def clean_name_prod(self):
         cleaned_data = self.cleaned_data.get('name_prod').split()

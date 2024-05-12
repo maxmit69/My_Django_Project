@@ -70,8 +70,7 @@ class UserResetPasswordView(PasswordResetView):
                         from_email=EMAIL_HOST_USER,
                         recipient_list=[user.email],
                     )
-                except Exception:
+                except Exception:  # noqa
                     print(f'Ошибка при отправке письма на {user.email}')
 
         return HttpResponseRedirect(reverse('users:login'))
-

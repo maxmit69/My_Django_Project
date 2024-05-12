@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 from pytils.translit import slugify
-from catalog.forms import ProductForm, BlogForm, VersionForm
+from catalog.forms import ProductForm, BlogForm, VersionForm, ModeratorForm
 from catalog.models import Product, Blog, Version
 
 
@@ -35,6 +36,26 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:edit_catalog')
+
+    def get_form_class(self):
+        """
+        Выводит форму в зависимости от прав пользователя и если модератор владелец продукта
+        то выводит полную версию формы.
+        """
+        user = self.request.user
+        if user == self.object.user or user.is_superuser:
+            return ProductForm
+
+        if user.has_perm('catalog.change_cat_product') and user.has_perm(
+                'catalog.publish_product') and user.has_perm(
+            'catalog.describe_product') and user != self.object.user:
+            return ModeratorForm
+
+        if not user.has_perm('catalog.change_cat_product') and not user.has_perm(
+                'catalog.publish_product') and not user.has_perm('catalog.describe_product'):
+            return ProductForm
+
+        raise PermissionDenied
 
 
 class ProductDetailView(DetailView):

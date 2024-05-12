@@ -25,6 +25,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="категория")
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name="Автор продукта",
                              help_text='Автор поста')
+    is_published_prod = models.BooleanField(default=False, verbose_name="публикация продукта")
 
     def __str__(self):
         return f'{self.name_prod} {self.category} {self.description_prod}'
@@ -32,6 +33,11 @@ class Product(models.Model):
     class Meta:
         verbose_name = "продукт"
         verbose_name_plural = "продукты"
+        permissions = [
+            ('publish_product', 'Can publish product'),
+            ('describe_product', 'Can describe product'),
+            ('change_cat_product', 'Can change category product'),
+        ]
 
 
 class Version(models.Model):

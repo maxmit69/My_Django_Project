@@ -43,17 +43,14 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         то выводит полную версию формы.
         """
         user = self.request.user
-        if user == self.object.user or user.is_superuser:
+        if user.is_superuser:
             return ProductForm
-
+        if user == self.object.user:
+            return ProductForm
         if user.has_perm('catalog.change_cat_product') and user.has_perm(
                 'catalog.publish_product') and user.has_perm(
             'catalog.describe_product') and user != self.object.user:
             return ModeratorForm
-
-        if not user.has_perm('catalog.change_cat_product') and not user.has_perm(
-                'catalog.publish_product') and not user.has_perm('catalog.describe_product'):
-            return ProductForm
 
         raise PermissionDenied
 

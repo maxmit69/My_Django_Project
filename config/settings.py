@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&1(e_+b-6+#$2dzb3m@n_qzgc2b4&@=3=t!1dmd4^ncs=2(@s8'
+SECRET_KEY = os.getenv('MY_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('MY_DEBUG', False) == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'my_django_postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'qwerty',
-        'HOST': 'localhost',
-        'PORT': 5432
+        'NAME': os.getenv('MY_NAME'),
+        'USER': os.getenv('MY_USER'),
+        'PASSWORD': os.getenv('MY_PASSWORD'),
+        'HOST': os.getenv('MY_HOST'),
+        'PORT': os.getenv('MY_PORT')
     }
 }
 
@@ -148,8 +148,8 @@ EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv('MY_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('MY_EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
+EMAIL_USE_TLS = os.getenv('MY_EMAIL_USE_TLS', False) == 'True'
+EMAIL_USE_SSL = os.getenv('MY_EMAIL_USE_SSL', False) == 'True'
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -166,6 +166,6 @@ if CACHE_ENABLED:
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-            'LOCATION': 'redis://127.0.0.1:6379',
+            'LOCATION': os.getenv('MY_LOCATION'),
         }
     }

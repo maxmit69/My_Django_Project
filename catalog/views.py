@@ -6,7 +6,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.views import View
 from pytils.translit import slugify
 from catalog.forms import ProductForm, BlogForm, VersionForm, ModeratorForm
-from catalog.models import Product, Blog, Version
+from catalog.models import Product, Blog, Version, Category
+from catalog.services import get_categories
 
 
 class ProductListView(ListView):
@@ -174,3 +175,10 @@ class VersionUpdateView(LoginRequiredMixin, UpdateView):
 class VersionDeleteView(LoginRequiredMixin, DeleteView):
     model = Version
     success_url = reverse_lazy('catalog:edit_catalog')
+
+
+class CategoryListView(ListView):
+    model = Category
+
+    def get_queryset(self):
+        return get_categories()
